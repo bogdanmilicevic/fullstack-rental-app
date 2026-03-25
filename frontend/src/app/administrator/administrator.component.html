@@ -1,0 +1,149 @@
+<div class="admin-container">
+  <div class="admin-section">
+    <h2>Svi turisti i vlasnici</h2>
+    <div class="table-container">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Korisničko ime</th>
+            <th>Ime</th>
+            <th>Prezime</th>
+            <th>Slika</th>
+            <th>Mail</th>
+            <th>Broj telefona</th>
+            <th>Status</th>
+            <th>Akcije</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (p of korisnici; track p.kor_ime){
+            <tr>
+              <td>{{p.kor_ime}}</td>
+              <td>{{p.ime}}</td>
+              <td>{{p.prezime}}</td>
+              <td><img [src]="p.slika" width="40" height="40" class="user-image" /></td>
+              <td>{{p.mejl}}</td>
+              <td>{{p.telefon}}</td>
+              <td>
+                <span class="status-badge" [class.status-pending]="p.status=='na cekanju'" 
+                      [class.status-active]="p.status=='aktivan'">
+                  {{p.status}}
+                </span>
+              </td>
+              <td class="action-buttons">
+                @if(p.status=='na cekanju'){ 
+                  <button (click)='odobri(p)' class="btn btn-success btn-sm">Odobri</button>
+                  <button (click)='odbi(p)' class="btn btn-danger btn-sm">Odbij</button>
+                }
+                @if(p.status=='aktivan'){ 
+                  <button (click)='deaktiviraj(p)' class="btn btn-secondary btn-sm">Deaktiviraj</button>
+                }
+                <button (click)="azur(p)" class="btn btn-secondary btn-sm">Ažuriraj</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  @if(azuriranje){
+    <div class="update-section">
+      <h3>Ažuriranje korisnika</h3>
+      <div class="update-form">
+        <p>Šta želite da ažurirate?</p>
+        <div class="radio-group">
+          <label class="radio-label">
+            <input type="radio" name="dugme" [(ngModel)]="tip" value="ime"/>
+            <span>Ime</span>
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="dugme" [(ngModel)]="tip" value="prezime"/>
+            <span>Prezime</span>
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="dugme" [(ngModel)]="tip" value="adresa"/>
+            <span>Adresa</span>
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="dugme" [(ngModel)]="tip" value="mejl"/>
+            <span>Mail</span>
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="dugme" [(ngModel)]="tip" value="telefon"/>
+            <span>Broj telefona</span>
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="dugme" [(ngModel)]="tip" value="slika"/>
+            <span>Slika</span>
+          </label>
+        </div>
+        
+        <div class="update-inputs">
+          @if(tip == "ime"){ 
+            <input type="text" [(ngModel)]="variabla" class="form-input" placeholder="Unesite novo ime">
+            <button (click)="omotac()" class="btn btn-primary">Ažuriraj ime</button>
+          }
+          @if(tip == "prezime"){  
+            <input type="text" [(ngModel)]="variabla" class="form-input" placeholder="Unesite novo prezime">
+            <button (click)="omotac()" class="btn btn-primary">Ažuriraj prezime</button>
+          }
+          @if(tip == "adresa"){  
+            <input type="text" [(ngModel)]="variabla" class="form-input" placeholder="Unesite novu adresu">
+            <button (click)="omotac()" class="btn btn-primary">Ažuriraj adresu</button>
+          }
+          @if(tip == "mejl"){  
+            <input type="email" [(ngModel)]="variabla" class="form-input" placeholder="Unesite novi mail">
+            <button (click)="omotac()" class="btn btn-primary">Ažuriraj mail</button>
+          }
+          @if(tip == "telefon"){  
+            <input type="text" [(ngModel)]="variabla" class="form-input" placeholder="Unesite novi broj telefona">
+            <button (click)="omotac()" class="btn btn-primary">Ažuriraj broj telefona</button>
+          }
+          @if(tip == "slika"){ 
+            <input type="file" accept="image/png, image/jpeg" (change)="izabranFile($event)" class="file-input"/>
+            <button (click)="omotac()" class="btn btn-primary">Ažuriraj sliku</button>
+          }
+        </div>
+        
+        <p class="error" *ngIf="error">{{error}}</p>
+      </div>
+    </div>
+  }
+
+  <div class="admin-section">
+    <h2>Sve vikendice</h2>
+    <div class="table-container">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Naziv vikendice</th>
+            <th>Vlasnik</th>
+            <th>Mesto vikendice</th>
+            <th>Telefon vikendice</th>
+            <th>Akcije</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (p of sveVikendice; track p.naziv){
+            <tr [class.blocked-row]="p.ima3LoseOcene">
+              <td>{{p.naziv}}</td>
+              <td>{{p.vlasnik}}</td>
+              <td>{{p.mesto}}</td>
+              <td>{{p.telefon}}</td>
+              <td>
+                @if(p.ima3LoseOcene){
+                  @if(p.boja){
+                    <button (click)="blokiraj(p)" class="btn btn-danger btn-sm">Blokiraj</button>
+                  } @else {
+                    <button disabled class="btn btn-secondary btn-sm">Blokiraj </button>
+                  }
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

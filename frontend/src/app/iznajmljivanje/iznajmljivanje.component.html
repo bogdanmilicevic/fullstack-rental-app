@@ -1,0 +1,139 @@
+<div class="iznajmljivanje-container">
+  @if(korak1){
+    <div class="step-section">
+      <div class="step-header">
+        <h2>Korak 1: Detalji rezervacije</h2>
+        <div class="vikendica-info">
+          <h3>{{vikendica.naziv}}</h3>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="pocetakDatum">Datum početka iznajmljivanja:</label>
+            <input type="date" id="pocetakDatum" [(ngModel)]="pocetakDatum" [min]="danasnjiDatum" class="form-input">
+          </div>
+          
+          <div class="form-group">
+            <label for="pocetakVreme">Vreme početka iznajmljivanja:</label>
+            <input type="time" id="pocetakVreme" [(ngModel)]="pocetakVreme" class="form-input">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="krajDatum">Datum kraja iznajmljivanja:</label>
+            <input type="date" id="krajDatum" [(ngModel)]="krajDatum" [min]="danasnjiDatum" class="form-input">
+          </div>
+          
+          <div class="form-group">
+            <label for="krajVreme">Vreme kraja iznajmljivanja:</label>
+            <input type="time" id="krajVreme" [(ngModel)]="krajVreme" class="form-input">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="brojOsoba">Broj osoba:</label>
+          <input type="number" id="brojOsoba" [(ngModel)]="brojOsoba" min="1" class="form-input" placeholder="Unesite broj osoba">
+        </div>
+
+        @if (error) {
+          <p class="error">{{error}}</p>
+        }
+
+        <div class="form-actions">
+          <button (click)="dalje()" class="btn btn-primary">Dalje</button>
+          <button (click)="nazad1()" class="btn btn-secondary">Nazad</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if(korak2){
+    <div class="step-section">
+      <div class="step-header">
+        <h2>Korak 2: Potvrda i plaćanje</h2>
+        <div class="vikendica-info">
+          <h3>{{vikendica.naziv}}</h3>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="pricing-section">
+          <h3>Cene</h3>
+          <div class="price-info">
+            <div class="price-item">
+              <label>Cena leti:</label>
+              <span class="price">{{vikendica.letnja_cena}} din</span>
+            </div>
+            <div class="price-item">
+              <label>Cena zimi:</label>
+              <span class="price">{{vikendica.zimska_cena}} din</span>
+            </div>
+            <div class="price-item total">
+              <label>Ukupna cena:</label>
+              <span class="price total-price">{{cena}} din</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="reservation-details">
+          <h3>Detalji rezervacije</h3>
+          <div class="details-grid">
+            <div class="detail-item">
+              <label>Datum početka:</label>
+              <span>{{pocetakDatum}}</span>
+            </div>
+            <div class="detail-item">
+              <label>Vreme početka:</label>
+              <span>{{pocetakVreme}}</span>
+            </div>
+            <div class="detail-item">
+              <label>Datum kraja:</label>
+              <span>{{krajDatum}}</span>
+            </div>
+            <div class="detail-item">
+              <label>Vreme kraja:</label>
+              <span>{{krajVreme}}</span>
+            </div>
+            <div class="detail-item">
+              <label>Broj osoba:</label>
+              <span>{{brojOsoba}}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="payment-section">
+          <h3>Plaćanje</h3>
+          <div class="form-group">
+            <label for="brojKartice">Broj kartice:</label>
+            <input type="text" id="brojKartice" [(ngModel)]="ulogovan.broj_kartice" class="form-input" placeholder="Unesite broj kartice">
+          </div>
+        </div>
+
+        <div class="additional-requests">
+          <h3>Dodatni zahtevi</h3>
+          <div class="form-group">
+            <label for="dodatniZahtevi">Unesite dodatne zahteve ako ih imate:</label>
+            <textarea id="dodatniZahtevi" [(ngModel)]="dodatniZahtevi" class="form-textarea" 
+                      placeholder="Unesite dodatne zahteve..." rows="4" maxlength="500"></textarea>
+            <small class="char-count">{{dodatniZahtevi ? dodatniZahtevi.length : 0}}/500 karaktera</small>
+          </div>
+        </div>
+
+        @if (error) {
+          <p class="error">{{error}}</p>
+        }
+        @if (obavestenje) {
+          <p [class.obavestenje]="1==1">{{obavestenje}}</p>
+        }
+
+        <div class="form-actions">
+          <button (click)="plati()" class="btn btn-primary btn-large">Plati i rezerviši</button>
+          <button (click)="nazad()" class="btn btn-secondary">Nazad</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

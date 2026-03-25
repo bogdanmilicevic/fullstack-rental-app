@@ -1,0 +1,98 @@
+<div class="registration-container">
+  <div class="registration-form">
+    <h2>Registracija</h2>
+    
+    <div class="form-row">
+      <div class="form-group">
+        <label for="username">Korisničko ime:</label>
+        <input type="text" id="username" [(ngModel)]="username" class="form-input" placeholder="Unesite korisničko ime">
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Lozinka:</label>
+        <input type="password" id="password" [(ngModel)]="password" class="form-input" placeholder="Unesite lozinku">
+      </div>
+    </div>
+    
+    <div class="form-row">
+      <div class="form-group">
+        <label for="ime">Ime:</label>
+        <input type="text" id="ime" [(ngModel)]="ime" class="form-input" placeholder="Unesite ime">
+      </div>
+      
+      <div class="form-group">
+        <label for="prezime">Prezime:</label>
+        <input type="text" id="prezime" [(ngModel)]="prezime" class="form-input" placeholder="Unesite prezime">
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label>Pol:</label>
+      <div class="radio-group">
+        <label class="radio-label">
+          <input type="radio" [(ngModel)]="pol" name="pol" value="M"/>
+          <span>Muški</span>
+        </label>
+        <label class="radio-label">
+          <input type="radio" [(ngModel)]="pol" name="pol" value="Z"/>
+          <span>Ženski</span>
+        </label>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="adresa">Adresa:</label>
+      <input type="text" id="adresa" [(ngModel)]="adresa" class="form-input" placeholder="Unesite adresu">
+    </div>
+    
+    <div class="form-row">
+      <div class="form-group">
+        <label for="telefon">Telefon:</label>
+        <input type="text" id="telefon" [(ngModel)]="telefon" class="form-input" placeholder="Unesite telefon">
+      </div>
+      
+      <div class="form-group">
+        <label for="mejl">Email:</label>
+        <input type="email" id="mejl" [(ngModel)]="mejl" class="form-input" placeholder="Unesite email">
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="broj_kartice">Broj kreditne kartice:</label>
+      <input type="text" id="broj_kartice" [(ngModel)]="broj_kartice" (input)="proveriKarticu()" class="form-input" placeholder="Unesite broj kartice">
+      @if(vrstaKartice=="Visa"){
+        <img src="slike/visa.png" class="kartica-ikona">
+      }
+      @if(vrstaKartice=="Master"){
+        <img src="slike/logo.png" class="kartica-ikona">
+      }
+      @if(vrstaKartice=="Dina"){
+        <img src="slike/diners-club.png" class="kartica-ikona">
+      }
+    </div>
+    
+    <div class="form-group">
+      <label>Tip korisnika:</label>
+      <div class="radio-group">
+        <label class="radio-label">
+          <input type="radio" [(ngModel)]="tip" name="logovanje" value="vlasnik"/>
+          <span>Vlasnik</span>
+        </label>
+        <label class="radio-label">
+          <input type="radio" [(ngModel)]="tip" name="logovanje" value="turista"/>
+          <span>Turista</span>
+        </label>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <h3>Dodaj profilnu sliku</h3>
+      <p class="file-info">Slika mora biti u JPG/PNG formatu i veličine između 100x100 i 300x300 px</p>
+      <input type="file" accept="image/png, image/jpeg" (change)="izabranFile($event)" class="file-input">
+    </div>
+    
+    <button (click)="registracija()" class="btn btn-primary">Registruj se</button>
+    
+    <p class="error" *ngIf="error">{{error}}</p>
+  </div>
+</div>

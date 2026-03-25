@@ -1,0 +1,18 @@
+<header class="header">
+  <div class="header-content">
+    <h1 class="logo">Iznajmljivanje vikendica</h1>
+    
+    @if (!isLoggedIn) {
+      <nav class="navigation">
+        <a routerLink="/" class="nav-link">Početna</a>
+        <a routerLink="/login" class="nav-link">Prijava</a>
+        <a routerLink="/registracija" class="nav-link">Registracija</a>
+      </nav>
+    } @else {
+      <div class="user-info">
+        <span class="user-type">{{userType}}</span>
+        <button (click)="logout()" class="btn btn-danger btn-sm">Logout</button>
+      </div>
+    }
+  </div>
+</header>

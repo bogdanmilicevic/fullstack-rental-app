@@ -1,0 +1,87 @@
+<div class="home-container">
+  <div class="stats-section">
+    <h2>Statistike</h2>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3>{{brojVikendica}}</h3>
+        <p>Ukupan broj vikendica</p>
+      </div>
+      <div class="stat-card">
+        <h3>{{brojTurista}}</h3>
+        <p>Ukupan broj turista</p>
+      </div>
+      <div class="stat-card">
+        <h3>{{brojVlasnika}}</h3>
+        <p>Ukupan broj vlasnika</p>
+      </div>
+      <div class="stat-card">
+        <h3>{{broj7}}</h3>
+        <p>Ukupan broj rezervacija u zadnjih 7 dana</p>
+      </div>
+      <div class="stat-card">
+        <h3>{{broj24}}</h3>
+        <p>Ukupan broj rezervacija u zadnjih 24 sata</p>
+      </div>
+      <div class="stat-card">
+        <h3>{{broj30}}</h3>
+        <p>Ukupan broj rezervacija u zadnjih 30 dana</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="search-section">
+    <h2>Pretraži vikendice</h2>
+    <div class="search-form">
+      <div class="form-group">
+        <label for="naziv">Pretraži po nazivu:</label>
+        <input type="text" id="naziv" [(ngModel)]="naziv" (input)="proveri()" class="form-input" placeholder="Unesite naziv vikendice">
+      </div>
+      <div class="form-group">
+        <label for="mesto">Pretraži po mestu:</label>
+        <input type="text" id="mesto" [(ngModel)]="mesto" (input)="proveri()" class="form-input" placeholder="Unesite mesto">
+      </div>
+    </div>
+    
+    <div class="sort-buttons">
+      <button (click)="sortirajRastucePoNazivu()" class="btn btn-secondary">Sortiraj rastuće po nazivu</button>
+      <button (click)="sortirajOpadajucePoNazivu()" class="btn btn-secondary">Sortiraj opadajuće po nazivu</button>
+      <button (click)="sortirajRastucePoMestu()" class="btn btn-secondary">Sortiraj rastuće po mestu</button>
+      <button (click)="sortirajOpadajucePoMestu()" class="btn btn-secondary">Sortiraj opadajuće po mestu</button>
+    </div>
+  </div>
+
+  <div class="vikendice-section">
+    <h2>Vikendice</h2>
+    @if(sveVikendice.length>0){
+      <div class="table-container">
+        <table class="vikendice-table">
+          <thead>
+            <tr>
+              <th>Naziv</th>
+              <th>Vlasnik</th>
+              <th>Mesto</th>
+              <th>Telefon</th>
+              <th>Cena za dan leti</th>
+              <th>Cena za dan zimi</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (p of sveVikendice; track p.naziv){
+              <tr>
+                <td>{{p.naziv}}</td>
+                <td>{{p.vlasnik}}</td>
+                <td>{{p.mesto}}</td>
+                <td>{{p.telefon}}</td>
+                <td>{{p.letnja_cena}} din</td>
+                <td>{{p.zimska_cena}} din</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+    @if(sveVikendice.length==0){
+      <p class="no-results">Nema vikendica za zadato pretraživanje</p>
+    }
+  </div>
+</div>

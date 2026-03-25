@@ -1,0 +1,301 @@
+
+<div class="turista-container">
+  <div class="navigation-tabs">
+    <button 
+      [class.active]="opcija1 === true" 
+      (click)="opcija(1)"
+      class="tab-btn">
+      Profil
+    </button>
+    <button 
+      [class.active]="opcija2 === true" 
+      (click)="opcija(2)"
+      class="tab-btn">
+      Vikendice
+    </button>
+    <button 
+      [class.active]="opcija3 === true" 
+      (click)="opcija(3)"
+      class="tab-btn">
+      Rezervacije
+    </button>
+  </div>
+
+  @if(opcija1){
+    <div class="profile-section">
+      <h2>Moj Profil</h2>
+      <div class="profile-card">
+        <div class="profile-image">
+          <img [src]="ulogovan.slika" width="110px" height="100px" class="user-photo">
+        </div>
+        <div class="profile-info">
+          <div class="info-item">
+            <label>Ime:</label>
+            <span>{{ulogovan.ime}}</span>
+          </div>
+          <div class="info-item">
+            <label>Prezime:</label>
+            <span>{{ulogovan.prezime}}</span>
+          </div>
+          <div class="info-item">
+            <label>Adresa:</label>
+            <span>{{ulogovan.adresa}}</span>
+          </div>
+          <div class="info-item">
+            <label>Mail:</label>
+            <span>{{ulogovan.mejl}}</span>
+          </div>
+          <div class="info-item">
+            <label>Kontakt telefon:</label>
+            <span>{{ulogovan.telefon}}</span>
+          </div>
+          <div class="info-item">
+            <label>Broj kreditne kartice:</label>
+            <span>{{ulogovan.broj_kartice}}</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="profile-actions">
+        <button (click)="opcija(4)" class="btn btn-secondary">Ažuriraj podatke</button>
+        <button (click)="promenaLozinke()" class="btn btn-secondary">Promeni lozinku</button>
+      </div>
+
+      @if(azuriranje){
+        <div class="update-section">
+          <h3>Ažuriranje podataka</h3>
+          <p>Šta želite da ažurirate?</p>
+          <div class="radio-group">
+            <label class="radio-label">
+              <input type="radio" name="dugme" [(ngModel)]="tip" value="ime"/>
+              <span>Ime</span>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="dugme" [(ngModel)]="tip" value="prezime"/>
+              <span>Prezime</span>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="dugme" [(ngModel)]="tip" value="adresa"/>
+              <span>Adresa</span>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="dugme" [(ngModel)]="tip" value="mejl"/>
+              <span>Mail</span>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="dugme" [(ngModel)]="tip" value="telefon"/>
+              <span>Broj telefona</span>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="dugme" [(ngModel)]="tip" value="kartica"/>
+              <span>Broj kartice</span>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="dugme" [(ngModel)]="tip" value="slika"/>
+              <span>Slika</span>
+            </label>
+          </div>
+          
+          <div class="update-inputs">
+            @if(tip == "ime"){ 
+              <input type="text" [(ngModel)]="variabla" class="form-input" placeholder="Unesite novo ime">
+              <button (click)="azuriraj()" class="btn btn-primary">Ažuriraj ime</button>
+            }
+            @if(tip == "prezime"){  
+              <input type="text" [(ngModel)]="variabla" class="form-input" placeholder="Unesite novo prezime">
+              <button (click)="azuriraj()" class="btn btn-primary">Ažuriraj prezime</button>
+            }
+            @if(tip == "adresa"){  
+              <input type="text" [(ngModel)]="variabla" class="form-input" placeholder="Unesite novu adresu">
+              <button (click)="azuriraj()" class="btn btn-primary">Ažuriraj adresu</button>
+            }
+            @if(tip == "mejl"){  
+              <input type="email" [(ngModel)]="variabla" class="form-input" placeholder="Unesite novi mail">
+              <button (click)="azuriraj()" class="btn btn-primary">Ažuriraj mail</button>
+            }
+            @if(tip == "telefon"){  
+              <input type="text" [(ngModel)]="variabla" class="form-input" placeholder="Unesite novi broj telefona">
+              <button (click)="azuriraj()" class="btn btn-primary">Ažuriraj broj telefona</button>
+            }
+            @if(tip == "kartica"){ 
+              <input type="text" [(ngModel)]="variabla" class="form-input" placeholder="Unesite novi broj kartice">
+              <button (click)="azuriraj()" class="btn btn-primary">Ažuriraj broj kartice</button>
+            }
+            @if(tip == "slika"){ 
+              <input type="file" accept="image/png, image/jpeg" (change)="izabranFile($event)" class="file-input"/>
+              <button (click)="azuriraj()" class="btn btn-primary">Ažuriraj sliku</button>
+            }
+          </div>
+          
+          <p class="error" *ngIf="error">{{error}}</p>
+        </div>
+      }
+    </div>
+  }
+
+  @if(opcija2){
+    <div class="vikendice-section">
+      <h2>Vikendice</h2>
+      
+      <div class="search-section">
+        <div class="search-form">
+          <div class="form-group">
+            <label for="naziv">Pretraži po nazivu:</label>
+            <input type="text" id="naziv" [(ngModel)]="naziv" (input)="proveri()" class="form-input" placeholder="Unesite naziv vikendice">
+          </div>
+          <div class="form-group">
+            <label for="mesto">Pretraži po mestu:</label>
+            <input type="text" id="mesto" [(ngModel)]="mesto" (input)="proveri()" class="form-input" placeholder="Unesite mesto">
+          </div>
+        </div>
+        
+        <div class="sort-buttons">
+          <button (click)="sortirajRastucePoNazivu()" class="btn btn-secondary btn-sm">Sortiraj rastuće po nazivu</button>
+          <button (click)="sortirajOpadajucePoNazivu()" class="btn btn-secondary btn-sm">Sortiraj opadajuće po nazivu</button>
+          <button (click)="sortirajRastucePoMestu()" class="btn btn-secondary btn-sm">Sortiraj rastuće po mestu</button>
+          <button (click)="sortirajOpadajucePoMestu()" class="btn btn-secondary btn-sm">Sortiraj opadajuće po mestu</button>
+        </div>
+      </div>
+
+      @if(sveVikendice.length>0){ 
+        <div class="table-container">
+          <table class="vikendice-table">
+            <thead>
+              <tr>
+                <th>Naziv</th>
+                <th>Vlasnik</th>
+                <th>Mesto</th>
+                <th>Telefon</th>
+                <th>Cena za dan leti</th>
+                <th>Cena za dan zimi</th>
+                <th>Prosečna ocena</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (p of sveVikendice; track p.naziv){
+                <tr>
+                  <td><a [routerLink]="['/vikendica']" (click)="promeni(p)" class="vikendica-link">{{p.naziv}}</a></td>
+                  <td>{{p.vlasnik}}</td>
+                  <td>{{p.mesto}}</td>
+                  <td>{{p.telefon}}</td>
+                  <td>{{p.letnja_cena}} din</td>
+                  <td>{{p.zimska_cena}} din</td>
+                  <td class="rating-cell">
+                    {{p.prosecna_ocena | number:'1.2-2'}}
+                    <span class="stars">{{prikazZvezdica(p.prosecna_ocena)}}{{zvezdice}}</span>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      } @else {
+        <p class="no-results">Nema vikendica</p>
+      }
+    </div>
+  }
+
+  @if(opcija3){
+    <div class="rezervacije-section">
+      @if(trenutneRezervacije.length>0){ 
+        <h2>Trenutne rezervacije</h2>
+        <div class="table-container">
+          <table class="rezervacije-table">
+            <thead>
+              <tr>
+                <th>Datum početka odsedanja</th>
+                <th>Datum kraja odsedanja</th>
+                <th>Naziv vikendice</th>
+                <th>Mesto vikendice</th>
+                <th>Akcije</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (p of trenutneRezervacije; track p.datumDo){
+                <tr>
+                  <td>{{p.datumOd}}</td>
+                  <td>{{p.datumDo}}</td>
+                  <td>{{p.naziv_vikendice}}</td>
+                  <td>{{p.mesto_vikendice}}</td>
+                  <td>
+                    @if(proveri1(p)){
+                      <button (click)="otkazi(p)" class="btn btn-danger btn-sm">Otkaži</button>
+                    }
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      } @else {
+        <p class="no-results">Nema trenutnih rezervacija</p>
+      }
+
+      <h2>Arhivirane rezervacije</h2>
+      <div class="table-container">
+        <table class="rezervacije-table">
+          <thead>
+            <tr>
+              <th>Datum početka odsedanja</th>
+              <th>Naziv vikendice</th>
+              <th>Komentar i ocena</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (p of prethodneRezervacije; track p.datumDo){
+              <tr>
+                <td>{{p.datumOd}}</td>
+                <td>{{p.naziv_vikendice}}</td>
+                <td>
+                  @if(p.ocenjena){
+                    <div class="review-content">
+                      <strong>Komentar:</strong> {{p.komentar}}<br/>
+                      <strong>Ocena:</strong> {{p.ocena}}
+                    </div>
+                  } @else {
+                    <button (click)="oceni(p)" class="btn btn-primary btn-sm">Dodaj recenziju</button>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+
+  @if(ocenjivanje){
+    <div class="rating-section">
+      <h3>Ocenjivanje vikendice</h3>
+      <div class="rating-form">
+        <div class="form-group">
+          <label for="komentar">Unesite komentar:</label>
+          <textarea id="komentar" [(ngModel)]="oznacena.komentar" class="form-textarea" placeholder="Unesite vaš komentar..."></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label>Unesite ocenu:</label>
+          <div class="rating">
+            <span 
+              *ngFor="let star of stars; let i = index"
+              (click)="setRating(i + 1)"
+              (mouseenter)="hoverRating = i + 1"
+              (mouseleave)="hoverRating = 0"
+              class="star-wrapper"
+            >
+              <i 
+                class="star"
+                [class.filled]="(i + 1) <= (hoverRating || oznacena.ocena)"
+              >
+                ★
+              </i>
+            </span>
+          </div>
+          
+        </div>
+        
+        <button (click)="oceni1()" class="btn btn-primary">Oceni</button>
+      </div>
+    </div>
+  }
+</div>

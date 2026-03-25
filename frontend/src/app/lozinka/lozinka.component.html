@@ -1,0 +1,56 @@
+<div class="password-container">
+  <div class="password-section">
+    <h2>Promena lozinke</h2>
+    
+    <div class="password-form">
+      <div class="form-group">
+        <label for="staraLozinka">Stara lozinka:</label>
+        <input 
+          type="password" 
+          id="staraLozinka" 
+          [(ngModel)]="staraLozinka" 
+          class="form-input" 
+          placeholder="Unesite staru lozinku">
+      </div>
+      
+      <div class="form-group">
+        <label for="novaLozinka1">Nova lozinka:</label>
+        <input 
+          type="password" 
+          id="novaLozinka1" 
+          [(ngModel)]="novaLozinka1" 
+          class="form-input" 
+          placeholder="Unesite novu lozinku">
+      </div>
+      
+      <div class="form-group">
+        <label for="novaLozinka2">Potvrdite novu lozinku:</label>
+        <input 
+          type="password" 
+          id="novaLozinka2" 
+          [(ngModel)]="novaLozinka2" 
+          class="form-input" 
+          placeholder="Unesite novu lozinku ponovo">
+      </div>
+      
+      <div class="password-requirements">
+        <h4>Zahtevi za lozinku:</h4>
+        <ul>
+          <li>Mora počinjati slovom</li>
+          <li>Mora imati najmanje jedno veliko slovo</li>
+          <li>Mora imati najmanje 3 mala slova</li>
+          <li>Mora imati najmanje jedan broj</li>
+          <li>Mora imati najmanje jedan specijalni karakter</li>
+          <li>Dužina između 6 i 10 karaktera</li>
+        </ul>
+      </div>
+      
+      <div class="form-actions">
+        <button (click)="azuriraj()" class="btn btn-primary">Ažuriraj lozinku</button>
+        <button (click)="nazad()" class="btn btn-secondary">Nazad</button>
+      </div>
+      
+      <p class="error" *ngIf="error">{{error}}</p>
+    </div>
+  </div>
+</div>

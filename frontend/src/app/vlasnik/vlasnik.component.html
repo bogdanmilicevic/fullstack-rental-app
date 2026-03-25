@@ -1,0 +1,449 @@
+
+<div class="turista-container">
+  <div class="navigation-tabs">
+    <button 
+      [class.active]="opcija1 === true" 
+      (click)="opcija(1)"
+      class="tab-btn">
+      Profil
+    </button>
+    <button 
+      [class.active]="opcija2 === true" 
+      (click)="opcija(2)"
+      class="tab-btn">
+      Rezervacije
+    </button>
+    <button 
+      [class.active]="opcija3 === true" 
+      (click)="opcija(3)"
+      class="tab-btn">
+      Moje vikendice
+    </button>
+    <button 
+      [class.active]="opcija4 === true" 
+      (click)="opcija(4)"
+      class="tab-btn">
+      Statistika
+    </button>
+  </div>
+  @if(opcija1){
+    <div class="profile-section">
+      <h2>Moj Profil</h2>
+      <div class="profile-card">
+        <div class="profile-image">
+          <img [src]="ulogovan.slika" width="110px" height="100px" class="user-photo">
+        </div>
+        <div class="profile-info">
+          <div class="info-item">
+            <label>Ime:</label>
+            <span>{{ulogovan.ime}}</span>
+          </div>
+          <div class="info-item">
+            <label>Prezime:</label>
+            <span>{{ulogovan.prezime}}</span>
+          </div>
+          <div class="info-item">
+            <label>Adresa:</label>
+            <span>{{ulogovan.adresa}}</span>
+          </div>
+          <div class="info-item">
+            <label>Mail:</label>
+            <span>{{ulogovan.mejl}}</span>
+          </div>
+          <div class="info-item">
+            <label>Kontakt telefon:</label>
+            <span>{{ulogovan.telefon}}</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="profile-actions">
+        <button (click)="opcija(5)" class="btn btn-secondary">Ažuriraj podatke</button>
+        <button (click)="promenaLozinke()" class="btn btn-secondary">Promeni lozinku</button>
+      </div>
+
+      @if(azuriranje){
+        <div class="update-section">
+          <h3>Ažuriranje podataka</h3>
+          <p>Šta želite da ažurirate?</p>
+          <div class="radio-group">
+            <label class="radio-label">
+              <input type="radio" name="dugme" [(ngModel)]="tip" value="ime"/>
+              <span>Ime</span>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="dugme" [(ngModel)]="tip" value="prezime"/>
+              <span>Prezime</span>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="dugme" [(ngModel)]="tip" value="adresa"/>
+              <span>Adresa</span>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="dugme" [(ngModel)]="tip" value="mejl"/>
+              <span>Mail</span>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="dugme" [(ngModel)]="tip" value="telefon"/>
+              <span>Broj telefona</span>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="dugme" [(ngModel)]="tip" value="slika"/>
+              <span>Slika</span>
+            </label>
+          </div>
+          
+          <div class="update-inputs">
+            @if(tip == "ime"){ 
+              <input type="text" [(ngModel)]="variabla" class="form-input" placeholder="Unesite novo ime">
+              <button (click)="azuriraj()" class="btn btn-primary">Ažuriraj ime</button>
+            }
+            @if(tip == "prezime"){  
+              <input type="text" [(ngModel)]="variabla" class="form-input" placeholder="Unesite novo prezime">
+              <button (click)="azuriraj()" class="btn btn-primary">Ažuriraj prezime</button>
+            }
+            @if(tip == "adresa"){  
+              <input type="text" [(ngModel)]="variabla" class="form-input" placeholder="Unesite novu adresu">
+              <button (click)="azuriraj()" class="btn btn-primary">Ažuriraj adresu</button>
+            }
+            @if(tip == "mejl"){  
+              <input type="email" [(ngModel)]="variabla" class="form-input" placeholder="Unesite novi mail">
+              <button (click)="azuriraj()" class="btn btn-primary">Ažuriraj mail</button>
+            }
+            @if(tip == "telefon"){  
+              <input type="text" [(ngModel)]="variabla" class="form-input" placeholder="Unesite novi broj telefona">
+              <button (click)="azuriraj()" class="btn btn-primary">Ažuriraj broj telefona</button>
+            }
+            @if(tip == "slika"){ 
+              <input type="file" accept="image/png, image/jpeg" (change)="izabranFile($event)" class="file-input"/>
+              <button (click)="azuriraj()" class="btn btn-primary">Ažuriraj sliku</button>
+            }
+          </div>
+          
+          <p class="error" *ngIf="error">{{error}}</p>
+        </div>
+      }
+    </div>
+  } 
+  @if(opcija2){
+    <div class="rezervacije-section">
+      @if(mojeRezervacije.length>0){ 
+        <h2>Neobrađene rezervacije</h2>
+        <div class="table-container">
+          <table class="rezervacije-table">
+            <thead>
+              <tr>
+                <th>Datum početka odsedanja</th>
+                <th>Naziv vikendice</th>
+                <th>Turista</th>
+                <th>Akcije</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (p of mojeRezervacije; track p.datumDo){
+                <tr>
+                  <td>{{p.datumOd}}</td>
+                  <td>{{p.naziv_vikendice}}</td>
+                  <td>{{p.naziv_turiste}}</td>
+                  <td>
+                    <div class="action-buttons">
+                      <input type="text" [(ngModel)]="razlogOdbijanja" placeholder="Razlog odbijanja" class="form-input">
+                      <button (click)="odbi(p)" class="btn btn-danger btn-sm">ODBIJ</button>
+                      <button (click)="prihvati(p)" class="btn btn-primary btn-sm">PRIHVATI</button>
+                    </div>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        <p class="error" *ngIf="error">{{error}}</p>
+      } @else {
+        <p class="no-results">Nema neobrađenih rezervacija</p>
+      }
+    </div>
+  }
+
+  @if(opcija3){
+    <div class="vikendice-section">
+      @if(mojeVikendice.length>0){ 
+        <h2>Moje vikendice</h2>
+        <div class="table-container">
+          <table class="vikendice-table">
+            <thead>
+              <tr>
+                <th>Naziv</th>
+                <th>Mesto</th>
+                <th>Prosečna ocena</th>
+                <th>Usluge</th>
+                <th>Letnja cena</th>
+                <th>Zimska cena</th>
+                <th>X koordinata</th>
+                <th>Y koordinata</th>
+                <th>Telefon</th>
+                <th>Kapacitet</th>
+                <th>Akcije</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (p of mojeVikendice; track p.naziv){
+                <tr>
+                  <td>{{p.naziv}}</td>
+                  <td>{{p.mesto}}</td>
+                  <td class="rating-cell">
+                    {{p.prosecna_ocena | number:'1.2-2'}}
+                    <span class="stars">{{prikazZvezdica(p.prosecna_ocena)}}{{zvezdice}}</span>
+                  </td>
+                  <td>{{p.opis_vikendice}}</td>
+                  <td>{{p.letnja_cena}} din</td>
+                  <td>{{p.zimska_cena}} din</td>
+                  <td>{{p.x}}</td>
+                  <td>{{p.y}}</td>
+                  <td>{{p.telefon}}</td>
+                  <td>{{p.brojOsoba}}</td>
+                  <td>
+                    <div class="action-buttons">
+                      <button (click)="azurirajVikendicu(p)" class="btn btn-primary btn-sm">Ažuriraj</button>
+                      <button (click)="obrisiVikendicu(p)" class="btn btn-danger btn-sm">Obriši</button>
+                    </div>
+                  </td>
+
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        
+        @if(nazivVikendice!='' && azuriranje1){
+          <div class="update-vikendica-section">
+            <h3>Ažuriranje vikendice: {{nazivVikendice}}</h3>
+            <div class="update-vikendica-details">
+              <p>Šta želite da ažurirate?</p>
+              <div class="radio-group">
+                <label class="radio-label">
+                  <input type="radio" name="dugme1" [(ngModel)]="tip1" value="naziv"/>
+                  <span>Naziv</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="dugme1" [(ngModel)]="tip1" value="mesto"/>
+                  <span>Mesto</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="dugme1" [(ngModel)]="tip1" value="usluge"/>
+                  <span>Usluge</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="dugme1" [(ngModel)]="tip1" value="letnja_cena"/>
+                  <span>Letnja cena</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="dugme1" [(ngModel)]="tip1" value="zimska_cena"/>
+                  <span>Zimska cena</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="dugme1" [(ngModel)]="tip1" value="x"/>
+                  <span>X koordinata</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="dugme1" [(ngModel)]="tip1" value="y"/>
+                  <span>Y koordinata</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="dugme1" [(ngModel)]="tip1" value="broj"/>
+                  <span>Broj telefona</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="dugme1" [(ngModel)]="tip1" value="brojOsoba"/>
+                  <span>Kapacitet</span>
+                </label>
+              </div>
+              
+              <div class="update-inputs">
+                @if(tip1 == "naziv"){ 
+                  <input type="text" [(ngModel)]="variabla1" placeholder="Unesite nov naziv" class="form-input">
+                  <button (click)="azuriraj1()" class="btn btn-primary">Ažuriraj naziv</button>
+                }
+                @if(tip1 == "mesto"){  
+                  <input type="text" [(ngModel)]="variabla1" placeholder="Unesite novo mesto" class="form-input">
+                  <button (click)="azuriraj1()" class="btn btn-primary">Ažuriraj mesto</button>
+                }
+                @if(tip1 == "usluge"){  
+                  <input type="text" [(ngModel)]="variabla1" placeholder="Unesite nove usluge" class="form-input">
+                  <button (click)="azuriraj1()" class="btn btn-primary">Ažuriraj usluge</button>
+                }
+                @if(tip1 == "letnja_cena"){  
+                  <input type="number" [(ngModel)]="broj" placeholder="Unesite novu letnju cenu" class="form-input">
+                  <button (click)="azuriraj1()" class="btn btn-primary">Ažuriraj letnju cenu</button>
+                }
+                @if(tip1 == "zimska_cena"){  
+                  <input type="number" [(ngModel)]="broj" placeholder="Unesite novu zimsku cenu" class="form-input">
+                  <button (click)="azuriraj1()" class="btn btn-primary">Ažuriraj zimsku cenu</button>
+                }
+                @if(tip1 == "x"){ 
+                  <input type="text" [(ngModel)]="variabla1" placeholder="Unesite novu x koordinatu" class="form-input">
+                  <button (click)="azuriraj1()" class="btn btn-primary">Ažuriraj x koordinatu</button>
+                }
+                @if(tip1 == "y"){ 
+                  <input type="text" [(ngModel)]="variabla1" placeholder="Unesite novu y koordinatu" class="form-input">
+                  <button (click)="azuriraj1()" class="btn btn-primary">Ažuriraj y koordinatu</button>
+                }
+                @if(tip1 == "broj"){ 
+                  <input type="text" [(ngModel)]="variabla1" placeholder="Unesite nov broj telefona" class="form-input">
+                  <button (click)="azuriraj1()" class="btn btn-primary">Ažuriraj broj telefona</button>
+                }
+                @if(tip1 == "brojOsoba"){ 
+                  <input type="number" [(ngModel)]="broj" placeholder="Unesite nov kapacitet vikendice" class="form-input">
+                  <button (click)="azuriraj1()" class="btn btn-primary">Ažuriraj kapacitet</button>
+                }
+              </div>
+              
+              <button (click)="zatvoriAzuriranje()" class="btn btn-secondary">Zatvori</button>
+              <p class="error" *ngIf="error">{{error}}</p>
+            </div>
+          </div>
+        }
+        
+        <div class="slike-section">
+          <h3>Slike vikendica</h3>
+          @for (p of mojeVikendice; track p.naziv) {
+            @if(p.slike.length>0){ 
+              <div class="vikendica-blok">
+                <p><b>Slike za vikendicu:</b> {{ p.naziv }}</p>
+                <div class="slike-container">
+                  @for (e of p.slike; track e.base64code) {
+                    <div class="slika-kartica">
+                      <img [src]="e.base64code" width="70" height="70" />
+                      <button (click)="ukloni(e.base64code,p.naziv)" class="btn btn-danger btn-sm">Ukloni</button>
+                    </div>
+                  }
+                </div>
+              </div>
+            } @else {
+              <p><b>Slike za vikendicu:</b> {{ p.naziv }} - nema nijednu sliku</p>
+            }
+          }
+          
+          <div class="add-image-section">
+            <button (click)="dodavanjeSlika=true" class="btn btn-secondary">Dodaj novu sliku</button>
+            
+            @if(dodavanjeSlika){ 
+              <div class="add-image-form">
+                <p>Odaberite vikendicu čiju sliku želite da dodate:</p>
+                <div class="radio-group">
+                  @for(p of mojeVikendice; track p.naziv){
+                    <label class="radio-label">
+                      <input type="radio" name="ok1" [(ngModel)]="nazivVikendice" [value]="p.naziv"/>
+                      <span>{{p.naziv}}</span>
+                    </label>
+                  }
+                </div>
+                <input type="file" accept="image/png, image/jpeg" (change)="izabranFile($event)" class="file-input"/>
+                <button (click)="dodajSliku()" class="btn btn-primary">Dodaj sliku</button>
+              </div>
+            }
+          </div>
+        </div>
+      } @else {
+        <p class="no-results">Nemate nijednu vikendicu</p>
+      }
+      
+      <div class="add-vikendica-section">
+        <h2>Dodaj novu vikendicu</h2>
+        <div class="add-vikendica-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="novNaziv">Naziv vikendice:</label>
+              <input type="text" id="novNaziv" [(ngModel)]="novNaziv" class="form-input" placeholder="Unesite naziv vikendice">
+            </div>
+            <div class="form-group">
+              <label for="novoMesto">Mesto vikendice:</label>
+              <input type="text" id="novoMesto" [(ngModel)]="novoMesto" class="form-input" placeholder="Unesite mesto vikendice">
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="noveUsluge">Usluge vikendice:</label>
+            <textarea id="noveUsluge" [(ngModel)]="noveUsluge" rows="6" cols="40" maxlength="500" class="form-textarea" placeholder="Unesite usluge vikendice"></textarea>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="letnjaCena">Cena za letnji period:</label>
+              <input type="number" id="letnjaCena" [(ngModel)]="letnjaCena" class="form-input" placeholder="Unesite cenu za letnji period">
+            </div>
+            <div class="form-group">
+              <label for="zimskaCena">Cena za zimski period:</label>
+              <input type="number" id="zimskaCena" [(ngModel)]="zimskaCena" class="form-input" placeholder="Unesite cenu za zimski period">
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="brojTelefona">Broj telefona vikendice:</label>
+              <input type="text" id="brojTelefona" [(ngModel)]="brojTelefona" class="form-input" placeholder="Unesite broj telefona">
+            </div>
+            <div class="form-group">
+              <label for="kapacitet">Kapacitet vikendice:</label>
+              <input type="number" id="kapacitet" [(ngModel)]="kapacitet" class="form-input" placeholder="Unesite kapacitet">
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="novoX">X koordinata vikendice:</label>
+              <input type="number" id="novoX" [(ngModel)]="novoX" class="form-input" placeholder="Unesite x koordinatu">
+            </div>
+            <div class="form-group">
+              <label for="novoY">Y koordinata vikendice:</label>
+              <input type="number" id="novoY" [(ngModel)]="novoY" class="form-input" placeholder="Unesite y koordinatu">
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="slike">Slike vikendice:</label>
+            <input type="file" id="slike" accept="image/png, image/jpeg" (change)="izabranFile($event)" class="file-input"/>
+            <button (click)="slika()" class="btn btn-secondary">Dodaj sliku</button>
+          </div>
+          
+          <div class="form-actions">
+            <button (click)="zavrsi()" class="btn btn-primary">Dodaj vikendicu</button>
+          </div>
+          
+          <p class="success" *ngIf="obavestenje">{{obavestenje}}</p>
+        </div>
+        
+        <div class="json-upload-section">
+          <h3>Učitaj JSON fajl sa podacima vikendice</h3>
+          <input type="file" (change)="ucitajJSON($event)" accept=".json" class="file-input">
+          <p class="success" *ngIf="poruka">{{poruka}}</p>
+        </div>
+      </div>
+    </div>
+  } 
+  @if(opcija4){
+    <div class="statistika-section">
+      <h2>Statistika rezervacija</h2>
+      
+      <div class="chart-section">
+        <h3>Rezervacije po mesecima</h3>
+        <div style="width: 90%; max-width: 800px; margin: auto;">
+          <canvas id="barChart"></canvas>
+        </div>
+      </div>
+      
+      <div class="chart-section">
+        <h3>Odnos vikend vs radni dani</h3>
+        <div class="pie-charts-container">
+          @for (naziv of Object.keys(rezultati2); track naziv) {
+            <div class="pie-chart-item">
+              <canvas [id]="'pieChart-' + naziv" width="300" height="300"></canvas>
+              <p class="chart-title">{{naziv}}</p>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  }
+  
+  
+</div>

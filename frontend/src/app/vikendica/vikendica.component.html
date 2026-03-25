@@ -1,0 +1,112 @@
+<div class="vikendica-container">
+  <div class="vikendica-header">
+    <h1>{{vikendica.naziv}}</h1>
+    <button (click)="nazad()" class="btn btn-secondary">Nazad</button>
+  </div>
+
+  <div class="vikendica-content">
+    <div class="vikendica-info">
+      <div class="info-section">
+        <h3>Osnovne informacije</h3>
+        <div class="info-grid">
+          <div class="info-item">
+            <label>Mesto:</label>
+            <span>{{vikendica.mesto}}</span>
+          </div>
+          <div class="info-item">
+            <label>Broj telefona:</label>
+            <span>{{vikendica.telefon}}</span>
+          </div>
+          <div class="info-item">
+            <label>Cena noćenja zimi:</label>
+            <span class="price">{{vikendica.zimska_cena}} din</span>
+          </div>
+          <div class="info-item">
+            <label>Cena noćenja leti:</label>
+            <span class="price">{{vikendica.letnja_cena}} din</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="description-section">
+        <h3>Opis i usluge</h3>
+        <p class="description">{{vikendica.opis_vikendice}}</p>
+      </div>
+    </div>
+
+    <div class="vikendica-gallery">
+      <h3>Galerija slika</h3>
+      <div class="slajder-container">
+        <button (click)="prevSlika()" class="slider-btn prev-btn">&#10094;</button>
+        
+        <div class="image-container">
+          @if (vikendica.slike && vikendica.slike.length > 0) {
+            <img
+              [src]="vikendica.slike[trenutniIndex].base64code"
+              class="slajd"
+              alt="Vikendica slika"
+            />
+          } @else {
+            <div class="no-image">
+              <p>Nema dostupnih slika</p>
+            </div>
+          }
+        </div>
+        
+        <button (click)="nextSlika()" class="slider-btn next-btn">&#10095;</button>
+      </div>
+      
+      @if (vikendica.slike && vikendica.slike.length) {
+        <p class="image-counter">
+          Slika {{ trenutniIndex + 1 }} od {{ vikendica.slike.length }}
+        </p>
+      }
+    </div>
+  </div>
+
+  <div class="action-section">
+    <button (click)="iznajmi()" class="btn btn-primary btn-large">Iznajmi vikendicu</button>
+  </div>
+
+  <div class="reviews-section">
+    <h2>Komentari i ocene</h2>
+    @if(vikendica.recenzije && vikendica.recenzije.length){
+      <div class="table-container">
+        <table class="reviews-table">
+          <thead>
+            <tr>
+              <th>Komentar</th>
+              <th>Ocena</th>
+              
+            </tr>
+          </thead>
+          <tbody>
+            @for (p of vikendica.recenzije; track p.komentar){
+              <tr>
+                <td class="comment-cell">{{p.komentar}}</td>
+                <td class="rating-cell">
+                  <span class="rating-stars">{{p.ocena}}/5</span>
+                  <div class="stars-display">
+                    @for (star of getStars(p.ocena); track star) {
+                      <span class="star {{star}}">★</span>
+                    }
+                  </div>
+                </td>
+               
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else {
+      <p class="no-reviews">Nema komentara za ovu vikendicu</p>
+    }
+  </div>
+
+  <div class="map-section">
+    <h3>Lokacija na mapi</h3>
+    <div class="mapa">
+      <div id="map"></div>
+    </div>
+  </div>
+</div>
